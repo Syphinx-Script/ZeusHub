@@ -59,7 +59,7 @@ end)
 -- Animate loading bar over 20 seconds
 local TweenService = game:GetService("TweenService")
 local goal = { Size = UDim2.new(1, 0, 1, 0) }
-local tweenInfo = TweenInfo.new(30, Enum.EasingStyle.Linear)
+local tweenInfo = TweenInfo.new(20, Enum.EasingStyle.Linear)
 local tween = TweenService:Create(barFill, tweenInfo, goal)
 tween:Play()
 
