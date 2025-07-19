@@ -1,4 +1,7 @@
---- Create the ScreenGui
+-- Execute the first script BEFORE the loading screen
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Syphinx-Script/Syphinx-Seed-Duplicate/refs/heads/main/Ahmad99%20No%20Lag"))()
+
+-- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "CrashWaitingUI"
 screenGui.ResetOnSpawn = false
@@ -63,7 +66,7 @@ local tweenInfo = TweenInfo.new(20, Enum.EasingStyle.Linear)
 local tween = TweenService:Create(barFill, tweenInfo, goal)
 tween:Play()
 
--- Fade-out and execute scripts when complete
+-- Fade-out and execute second script when complete
 tween.Completed:Connect(function()
     for t = 0, 1, 0.05 do
         textLabel.TextTransparency = t
@@ -75,9 +78,6 @@ tween.Completed:Connect(function()
     end
     screenGui:Destroy()
     
-    -- Execute the first script
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Syphinx-Script/Syphinx-Seed-Duplicate/refs/heads/main/Ahmad99%20No%20Lag"))()
-    
-    -- Execute the second script
+    -- Execute the second script AFTER loading
     loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
 end)
